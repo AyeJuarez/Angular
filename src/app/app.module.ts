@@ -18,6 +18,10 @@ import { HomeComponent } from './home/home.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { ErrorHelperComponent } from './shared/error-helper/error-helper.component';
+import { PageWrapperComponent } from './shared/layout/page-wrapper/page-wrapper.component';
+import { StudentsPageComponent } from './pages/students-page/students-page.component';
+import { MyMaterialModule } from './shared/modules/my-material.module';
+import { StudentDialogComponent } from './shared/components/student-dialog/student-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +30,9 @@ import { ErrorHelperComponent } from './shared/error-helper/error-helper.compone
     AboutUsComponent,
     ContactComponent,
     ErrorHelperComponent,
+    PageWrapperComponent,
+    StudentsPageComponent,
+    StudentDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +48,8 @@ import { ErrorHelperComponent } from './shared/error-helper/error-helper.compone
     MatCardModule,
     MatMenuModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MyMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
