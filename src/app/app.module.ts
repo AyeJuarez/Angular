@@ -19,9 +19,13 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactComponent } from './contact/contact.component';
 import { ErrorHelperComponent } from './shared/error-helper/error-helper.component';
 import { PageWrapperComponent } from './shared/layout/page-wrapper/page-wrapper.component';
-import { StudentsPageComponent } from './pages/students-page/students-page.component';
 import { MyMaterialModule } from './shared/modules/my-material.module';
 import { StudentDialogComponent } from './shared/components/student-dialog/student-dialog.component';
+import { PagesModule } from './pages/pages.module';
+import { StudentsPageComponent } from './pages/students-page/students-page.component';
+import { ObservablesComponent } from './shared/components/observables/observables.component';
+import { FechaComponent } from './shared/components/fecha/fecha.component';
+
 
 @NgModule({
   declarations: [
@@ -31,8 +35,10 @@ import { StudentDialogComponent } from './shared/components/student-dialog/stude
     ContactComponent,
     ErrorHelperComponent,
     PageWrapperComponent,
-    StudentsPageComponent,
     StudentDialogComponent,
+    StudentsPageComponent,
+    ObservablesComponent,
+    FechaComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +55,7 @@ import { StudentDialogComponent } from './shared/components/student-dialog/stude
     MatMenuModule,
     FormsModule,
     ReactiveFormsModule,
-    MyMaterialModule
+    MyMaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

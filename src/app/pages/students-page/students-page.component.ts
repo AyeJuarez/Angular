@@ -9,7 +9,7 @@ import { StudentDialogComponent } from '../../shared/components/student-dialog/s
   styleUrls: ['./students-page.component.css']
 })
 export class StudentsPageComponent {
-  students: Student[] = [
+   public students: Student[] = [
     new Student(1, 'Sofia', 'Lemos', true),
     new Student(2, 'Leonardo', 'Rodriguez', false),
     new Student(3, 'Mariano', 'Alves', true),
