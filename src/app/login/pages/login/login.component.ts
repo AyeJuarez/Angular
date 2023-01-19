@@ -1,33 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
-
-  public formulario: FormGroup;
-  public imagenURL: string;
+export class LoginComponent implements OnDestroy {
+  public loading = false
+  public form = new FormGroup({
+    email: new FormControl('michael.lawson@reqres.in', [Validators.required]),
+    password: new FormControl('cityslicka', [Validators.required]),
+  })
+  private destroyed$ = new Subject();
 
   constructor(
-    private authService: AuthenticationService,
-    private router: Router
-  ) {
+    private readonly authService: AuthService,
+    private readonly router: Router,
+  ) {}
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true)
   }
 
-  ngOnInit(): void {
-    this.formulario = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
-    });
+
+  login() {
+    this.loading = true
+    this.authService.login({
+      email: this.form.get('email')?.value || '',
+      password: this.form.get('password')?.value || ''
+    }).subscribe((Student) => {
+      this.loading = false
+      if (Student) {
+        this.router.navigate(['dashboard', 'students'])
+      }
+    })
   }
-
-  public onSubmit(): void {
-
-  }
-
 }

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,31 +14,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AboutUsComponent } from './about-us/about-us.component';
-import { ContactComponent } from './contact/contact.component';
-import { ErrorHelperComponent } from './shared/error-helper/error-helper.component';
-import { PageWrapperComponent } from './shared/layout/page-wrapper/page-wrapper.component';
-import { MyMaterialModule } from './shared/modules/my-material.module';
-import { StudentDialogComponent } from './shared/components/student-dialog/student-dialog.component';
-import { StudentsPageComponent } from './pages/students-page/students-page.component';
-import { ObservablesComponent } from './shared/components/observables/observables.component';
-import { FechaComponent } from './shared/components/fecha/fecha.component';
-import { AlumnosComponent } from './alumnos/alumnos.component';
-import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { appReducer } from './store/app.reducer';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AboutUsComponent,
-    ContactComponent,
-    ErrorHelperComponent,
-    PageWrapperComponent,
-    StudentDialogComponent,
-    StudentsPageComponent,
-    ObservablesComponent,
-    FechaComponent,
-    AlumnosComponent,
+  
   ],
   imports: [
     BrowserModule,
@@ -55,8 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatMenuModule,
     FormsModule,
     ReactiveFormsModule,
-    MyMaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot(appReducer, {}),
   ],
   providers: [],
   bootstrap: [AppComponent]

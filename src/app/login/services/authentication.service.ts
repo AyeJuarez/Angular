@@ -1,31 +1,89 @@
-import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { of as ObservableOf } from 'rxjs';
-
-import { ElementoMenu } from 'src/app/core/modelos/elemento-menu';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable, catchError, map, mergeMap, of, tap } from 'rxjs';
+import {
+  LoginSuccessful,
+  SingleUserResponse,
+} from 'src/app/models/reqres.interfaces';
+import { Student } from 'src/app/models/student.model';
+import { AppState } from 'src/app/store/app.reducer';
+import { setAuthenticatedUser, unsetAuthenticatedUser } from 'src/app/store/auth/auth.actions';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthService {
+  apiUrl = 'https://reqres.in/api';
 
   constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {
+    private readonly httpClient: HttpClient,
+    private readonly store: Store<AppState>,
+    private readonly router: Router,
+  ) {}
+
+  login(data: { email: string; password: string }): Observable<any> {
+    return this.httpClient
+      .post<LoginSuccessful>(`${this.apiUrl}/login`, data)
+      .pipe(
+        tap((data) => localStorage.setItem('token', data.token)),
+        mergeMap(() =>
+          this.httpClient.get<SingleUserResponse>(`${this.apiUrl}/users/7`)
+        ),
+        map(
+          ({ data }) =>
+            new Student(
+              data.id,
+              data.email,
+              data.first_name,
+              data.last_name,
+              data.avatar
+            )
+        ),
+        // tap((user) => this.sessionService.setUser(user))
+        tap(
+          (user) => this.store.dispatch(
+            setAuthenticatedUser({
+              authenticatedUser: user
+            })
+          )
+        )
+      );
   }
 
-  
-
-  public getMenuElements(): Observable<ElementoMenu[]> {
-    // FIXME: Este método debe pedir al back los menús que tiene permitido ver
-    return ObservableOf([
-      {nombre: 'Alumnos', enlace: 'alumnos', icono: 'alumnos'}
-    ]);
+  logOut() {
+    localStorage.removeItem('token');
+    this.store.dispatch(unsetAuthenticatedUser());
+    this.router.navigate(['auth', 'login']);
   }
-  
 
+  verifyToken(): Observable<boolean> {
+    const lsToken = localStorage.getItem('token');
+
+    return of(lsToken)
+      .pipe(
+        tap((token) => {
+          if (!token) throw new Error('Token invalido')
+        }),
+        mergeMap((token) => 
+          this.httpClient.get<SingleUserResponse>(`${this.apiUrl}/users/7`)
+        ),
+        tap(({ data }) => 
+          this.store.dispatch(
+            setAuthenticatedUser({
+              authenticatedUser: new Student(
+                data.id,
+                data.email,
+                data.first_name,
+                data.last_name,
+                data.avatar
+              ) 
+            })
+          )
+        ),
+        map((user) => !!user),
+        catchError(() => of(false))
+      )
+  }
 }

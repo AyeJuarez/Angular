@@ -7,14 +7,17 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
+import { CustomSpinnerComponent } from '../components/custom-spinner/custom-spinner.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
-  
+    CustomSpinnerComponent,
   ],
   imports: [
     CommonModule,
     MatCardModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     MatTableModule,
@@ -24,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
+    CustomSpinnerComponent
   ]
 })
 export class MyMaterialModule { }
